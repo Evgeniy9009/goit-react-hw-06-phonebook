@@ -3,6 +3,7 @@ import ContactList from 'components/ContactList/ContactList'
 import Filter from 'components/Filter/Filter'
 import { nanoid } from 'nanoid'
 import { useEffect, useState } from 'react'
+import React from 'react';
 
 export default function Contacts() {
 

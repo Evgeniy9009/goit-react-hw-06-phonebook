@@ -1,4 +1,5 @@
 import Contacts from "./Contacts/Contacts";
+import React from 'react';
 
 export const App = () => {
   return (
