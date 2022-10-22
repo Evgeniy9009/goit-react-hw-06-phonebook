@@ -36,14 +36,14 @@ export default function Contacts() {
         dispatch(setFilter(value))
     }
 
-  return (
-            <div>
-                <h1>Phonebook</h1>
-                <ContactForm onSubmit={onAddContact} />
-                
-                <h2>Contacts</h2>
-                <Filter filter={filter} handleChange={handleChange} />
-                <ContactList items={contacts} removeContact={onRemoveContact} />
-            </div>
+return (
+    <div>
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={onAddContact} />
+        
+        <h2>Contacts</h2>
+        <Filter filter={filter} handleChange={handleChange} />
+        <ContactList items={contacts} removeContact={onRemoveContact} />
+    </div>
     )
 }
