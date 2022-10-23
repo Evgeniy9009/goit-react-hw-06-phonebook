@@ -1,15 +1,33 @@
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
-import PropTypes from 'prop-types'
 import css from 'components/ContactForm/ContactForm.module.css'
+import { addContact } from '../../redux/contacts/contacts-slice'
+import { useDispatch, useSelector } from 'react-redux'
+import { getFilterContacts } from 'redux/contacts/contacts-selector'
 
-export default function ContactForm({onSubmit}) {
+export default function ContactForm() {
 
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
 
     const idName = nanoid()
     const idNumber = nanoid()
+
+    const contacts = useSelector(getFilterContacts)
+    const dispatch = useDispatch()
+    
+    const onAddContact = (contact) => {
+        if (isDuplicate(contact)) {
+            return alert (`Name ${contact.name} or number ${contact.number} is already in contacts.`)
+        }
+        const action = addContact(contact)
+        dispatch(action)
+    }
+
+    const isDuplicate = ({ name, number }) => {
+        const res = contacts.find((item) => item.name.toLocaleLowerCase() === name.toLocaleLowerCase() || item.number === number)
+        return res
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,13 +44,14 @@ export default function ContactForm({onSubmit}) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const contact= {name, number}
-        onSubmit(contact)
+        onAddContact(contact)
         console.log(contact)
         setName('')
         setNumber('')
 
     }
-  return(
+
+    return (
             <form onSubmit={handleSubmit} className={css.form}>
                 <label htmlFor={idName}>Name</label>
                     <input
@@ -45,7 +64,6 @@ export default function ContactForm({onSubmit}) {
                         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                         required
                     />
-
                 <label htmlFor={idNumber}>Number</label>
                     <input
                         id={idNumber}
@@ -57,12 +75,7 @@ export default function ContactForm({onSubmit}) {
                         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                         required
                     />
-
                 <button type='submit'>Add contact</button>
             </form >
         )
-}
-
-ContactForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired
 }
